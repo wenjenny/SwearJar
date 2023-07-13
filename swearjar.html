@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> </script>
+<body>
+
+<button onclick="pAdd()">+</button>
+<button onclick="pSub()">-</button>
+<p id="pCount">0</p>
+<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+<form id="form">
+    <label for="patty">First name:</label><br>
+    <input type="text" id="patty" name="patty"><br>
+    <button type="submit" value="Submit">Submit</button>
+</form>
+
+<script>
+
+var pCount = 0;
+var eCount = 0;
+var cCount = 0;
+var kCount = 0;
+
+var xValues = ["Patty", "Eleanor", "Celine", "Karina"];
+var yValues = [pCount, eCount, cCount, kCount];
+var barColors = ["#241528", "d134e9",'#3f1a44',"#4a6b8c"];
+
+const chart = new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Swear Jar Totals"
+    },
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+  }
+});
+
+function pAdd() {
+    pCount += 1;
+    document.getElementById("pCount").innerHTML = pCount;
+    chart.data.datasets[0].data[0] += 1;
+    chart.update();
+}
+function pSub() {
+    pCount -= 1;
+    document.getElementById("pCount").innerHTML = pCount;
+    chart.data.datasets[0].data[0] -= 1;
+    chart.update();
+}
+
+const form = document.querySelector("#form")
+const submitButton = document.querySelector("#submit")
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyY7O-lhK-yknNG1r5JLraLCXLqn8YTo3CsMh-TyJ_A_rtP_F5xrUCBd7N_jLIYpD29/exec'
+
+form.addEventListener('submit', e => {
+    submitButton.disabled = true
+    e.preventDefault()
+    let requestBody = new FormData(form)
+    fetch(scriptURL, { method: 'POST', body: requestBody})
+    // .then(response => {
+    //     alert('Success!', response)
+    //     submitButton.disabled = false
+    //     })
+    // .catch(error => {
+    //     alert('Error!', error.message)
+    //     submitButton.disabled = false
+    //     })
+    .then(response => console.log("completed"))
+     
+})
+
+
+
+</script>
+
+</body>
+</html>
+
