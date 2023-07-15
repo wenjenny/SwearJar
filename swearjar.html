@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> </script>
+<style>
+    td { padding: 15px; }
+</style>
 <body>
 
-<button onclick="pAdd()">+</button>
-<button onclick="pSub()">-</button>
-<p id="pCount">0</p>
-<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+<table>
+    <tr>
+        <td>
+            eleanor
+        </td>
+        <td>
+            celine
+        </td>
+    </tr>
+    <tr>
+        <td>
+            patty <br>
+            <button onclick="pAdd()">+</button>
+            <p id="pCount"></p>
+            <button onclick="pSub()">-</button>
+        </td>
+        <td>
+            karina
+        </td>
+    </tr>
+    </table>
 
-<form id="form">
-    <label for="patty">First name:</label><br>
-    <input type="text" id="patty" name="patty"><br>
-    <button type="submit" value="Submit">Submit</button>
-</form>
+    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
 
 <script>
 
@@ -20,6 +36,34 @@ var pCount = 0;
 var eCount = 0;
 var cCount = 0;
 var kCount = 0;
+var lst;
+
+const scriptURL = 'https://script.google.com/macros/s/AKfycbz2V6_iO8D9pZlzdJ9g4hLVIjuKiw359pScDK4Mv0u4N8d2xXV0bCICh6ZKe8qxHdOk/exec'
+
+async function getInfo() {
+    let response = await fetch(scriptURL, {method: 'GET'})
+    let responseText = await response.text()
+        
+    /*
+    parsing
+    0: patty total
+    1: enor total
+    2: celine total
+    3: karina total
+    4: patty exercise
+    5: enor exercise
+    6: celine exercise
+    7: karina exercise
+    */
+   var lst = responseText.split(',')
+   pCount = parseInt(lst[0])
+   eCount = lst[1]
+   cCount = lst[2]
+   kCount = lst[3]
+   document.getElementById('pCount').innerHTML=pCount
+}
+
+window.onload = getInfo;
 
 var xValues = ["Patty", "Eleanor", "Celine", "Karina"];
 var yValues = [pCount, eCount, cCount, kCount];
@@ -43,7 +87,8 @@ const chart = new Chart("myChart", {
     scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                callback: function(value) {if (value % 1 === 0) {return value;}}
             }
         }]
     }
@@ -62,29 +107,6 @@ function pSub() {
     chart.data.datasets[0].data[0] -= 1;
     chart.update();
 }
-
-const form = document.querySelector("#form")
-const submitButton = document.querySelector("#submit")
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyY7O-lhK-yknNG1r5JLraLCXLqn8YTo3CsMh-TyJ_A_rtP_F5xrUCBd7N_jLIYpD29/exec'
-
-form.addEventListener('submit', e => {
-    submitButton.disabled = true
-    e.preventDefault()
-    let requestBody = new FormData(form)
-    fetch(scriptURL, { method: 'POST', body: requestBody})
-    // .then(response => {
-    //     alert('Success!', response)
-    //     submitButton.disabled = false
-    //     })
-    // .catch(error => {
-    //     alert('Error!', error.message)
-    //     submitButton.disabled = false
-    //     })
-    .then(response => console.log("completed"))
-     
-})
-
-
 
 </script>
 
