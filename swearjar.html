@@ -19,7 +19,7 @@
         <td>
             patty <br>
             <button onclick="pAdd()">+</button>
-            <p id="pCount"></p>
+            <p id="pEXE"></p>
             <button onclick="pSub()">-</button>
         </td>
         <td>
@@ -30,40 +30,61 @@
 
     <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
 
+<button onclick="setInfo()">test</button>
 <script>
 
-var pCount = 0;
-var eCount = 0;
-var cCount = 0;
-var kCount = 0;
-var lst;
+var pCount = 1;
+var eCount = 2;
+var cCount = 3;
+var kCount = 4;
+var pEXE = 5;
+var eEXE = 6;
+var cEXE = 7;
+var kEXE = 8;
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz2V6_iO8D9pZlzdJ9g4hLVIjuKiw359pScDK4Mv0u4N8d2xXV0bCICh6ZKe8qxHdOk/exec'
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyLNInTWt9tXoXyxtrNP8AUS8ucXGkZLVl_GR6OOmWxSlDAqUaWJve2gc_kT5xZLQFQ/exec'
 
 async function getInfo() {
     let response = await fetch(scriptURL, {method: 'GET'})
     let responseText = await response.text()
-        
-    /*
-    parsing
-    0: patty total
-    1: enor total
-    2: celine total
-    3: karina total
-    4: patty exercise
-    5: enor exercise
-    6: celine exercise
-    7: karina exercise
-    */
+    
    var lst = responseText.split(',')
    pCount = parseInt(lst[0])
-   eCount = lst[1]
-   cCount = lst[2]
-   kCount = lst[3]
-   document.getElementById('pCount').innerHTML=pCount
+   eCount = parseInt(lst[1])
+   cCount = parseInt(lst[2])
+   kCount = parseInt(lst[3])
+   pEXE = parseInt(lst[4])
+   eEXE = parseInt(lst[5])
+   cEXE = parseInt(lst[6])
+   kEXE = parseInt(lst[7])
+   document.getElementById('pEXE').innerHTML=pEXE
+   chart.data.datasets[0].data[0] = pCount;
+   chart.data.datasets[0].data[1] = eCount;
+   chart.data.datasets[0].data[2] = cCount;
+   chart.data.datasets[0].data[3] = kCount;
+   chart.update();
 }
 
-window.onload = getInfo;
+// window.onload = getInfo;
+// parsing JSON throws CORS policy error; plain JSON able to be written w/o error
+
+async function setInfo() {
+    const rawResponse = await fetch(scriptURL, {
+        redirect: "follow",
+        method: 'POST',
+        // mode: 'no-cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify({pCount: pCount, eCount: eCount, cCount: cCount, kCount: kCount,
+                                pEXE: pEXE, eEXE: eEXE, cEXE: cEXE, kEXE: kEXE})
+            // body: JSON.stringify({a: 1, b: 'Textual content'})
+    });
+    // const content = await rawResponse.json();
+
+    console.log("done");
+}
 
 var xValues = ["Patty", "Eleanor", "Celine", "Karina"];
 var yValues = [pCount, eCount, cCount, kCount];
@@ -97,15 +118,14 @@ const chart = new Chart("myChart", {
 
 function pAdd() {
     pCount += 1;
-    document.getElementById("pCount").innerHTML = pCount;
+    pEXE += 1;
+    document.getElementById("pEXE").innerHTML = pEXE;
     chart.data.datasets[0].data[0] += 1;
     chart.update();
 }
 function pSub() {
-    pCount -= 1;
-    document.getElementById("pCount").innerHTML = pCount;
-    chart.data.datasets[0].data[0] -= 1;
-    chart.update();
+    pEXE -= 1;
+    document.getElementById("pEXE").innerHTML = pEXE;
 }
 
 </script>
