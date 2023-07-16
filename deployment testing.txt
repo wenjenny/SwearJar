@@ -53,3 +53,15 @@ Version 33: error but written [number] 0
 
   SpreadsheetApp.getActive().getRange("Sheet1!C6").setValue(data)
   SpreadsheetApp.getActive().getRange("Sheet1!C5").setValue(typeof(data))
+
+Version 34: error but written peck peck
+  var pT = JSON.parse(e.postData.contents).pCount
+  var eT = JSON.parse(e.postData.contents).eCount
+  var cT = JSON.parse(e.postData.contents).cCount
+  var kT = JSON.parse(e.postData.contents).kCount
+  var pE = JSON.parse(e.postData.contents).pEXE
+  var eE = JSON.parse(e.postData.contents).eEXE
+  var cE = JSON.parse(e.postData.contents).cEXE
+  var kE = JSON.parse(e.postData.contents).kEXE
+
+  SpreadsheetApp.getActive().getRange("Sheet1!B5:E6").setValues([[pT,eT,cT,kT],[pE,eE,cE,kE]])

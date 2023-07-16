@@ -1,135 +1,82 @@
 <!DOCTYPE html>
 <html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> </script>
-<style>
-    td { padding: 15px; }
-</style>
-<body>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> </script>
+    <link href='https://fonts.googleapis.com/css?family=Lexend' rel='stylesheet'>
+    <link href="css/styles.css" rel="stylesheet" />
+    <title> Swear Jar </title>
+    <link rel="shortcut icon" href="assets/favicon.ico"/>
+</head>
 
-<table>
-    <tr>
-        <td>
-            eleanor
-        </td>
-        <td>
-            celine
-        </td>
-    </tr>
-    <tr>
-        <td>
-            patty <br>
-            <button onclick="pAdd()">+</button>
-            <p id="pEXE"></p>
-            <button onclick="pSub()">-</button>
-        </td>
-        <td>
-            karina
-        </td>
-    </tr>
+<body style="padding:50px;">
+    <table class="tbl">
+        <tr>
+            <td>
+                eleanor <br>
+                <table>
+                    <tr>
+                        <td> total swears: </td>
+                        <td> <div id="eCount"> </div> </td>
+                        <td> <button onclick="eAdd()">+</button> </td>
+                    </tr>
+                    <tr>
+                        <td> exercise remaining: </td>
+                        <td> <div id="eEXE"></div></td>
+                        <td> <button onclick="eSub()">-</button> </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                celine <br>
+                <table>
+                    <tr>
+                        <td> total swears: </td>
+                        <td> <div id="cCount"> </div> </td>
+                        <td> <button onclick="cAdd()">+</button> </td>
+                    </tr>
+                    <tr>
+                        <td> exercise remaining: </td>
+                        <td> <div id="cEXE"></div></td>
+                        <td> <button onclick="cSub()">-</button> </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                patty <br>
+                <table>
+                    <tr>
+                        <td> total swears: </td>
+                        <td> <div id="pCount"> </div> </td>
+                        <td> <button onclick="pAdd()">+</button> </td>
+                    </tr>
+                    <tr>
+                        <td> exercise remaining: </td>
+                        <td> <div id="pEXE"></div></td>
+                        <td> <button onclick="pSub()">-</button> </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                karina
+                <table>
+                    <tr>
+                        <td> total swears: </td>
+                        <td> <div id="kCount"> </div> </td>
+                        <td> <button onclick="kAdd()">+</button> </td>
+                    </tr>
+                    <tr>
+                        <td> exercise remaining: </td>
+                        <td> <div id="kEXE"></div></td>
+                        <td> <button onclick="kSub()">-</button> </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     </table>
-
     <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-
-<button onclick="setInfo()">test</button>
-<script>
-
-var pCount = 1;
-var eCount = 2;
-var cCount = 3;
-var kCount = 4;
-var pEXE = 5;
-var eEXE = 6;
-var cEXE = 7;
-var kEXE = 8;
-
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyLNInTWt9tXoXyxtrNP8AUS8ucXGkZLVl_GR6OOmWxSlDAqUaWJve2gc_kT5xZLQFQ/exec'
-
-async function getInfo() {
-    let response = await fetch(scriptURL, {method: 'GET'})
-    let responseText = await response.text()
-    
-   var lst = responseText.split(',')
-   pCount = parseInt(lst[0])
-   eCount = parseInt(lst[1])
-   cCount = parseInt(lst[2])
-   kCount = parseInt(lst[3])
-   pEXE = parseInt(lst[4])
-   eEXE = parseInt(lst[5])
-   cEXE = parseInt(lst[6])
-   kEXE = parseInt(lst[7])
-   document.getElementById('pEXE').innerHTML=pEXE
-   chart.data.datasets[0].data[0] = pCount;
-   chart.data.datasets[0].data[1] = eCount;
-   chart.data.datasets[0].data[2] = cCount;
-   chart.data.datasets[0].data[3] = kCount;
-   chart.update();
-}
-
-// window.onload = getInfo;
-// parsing JSON throws CORS policy error; plain JSON able to be written w/o error
-
-async function setInfo() {
-    const rawResponse = await fetch(scriptURL, {
-        redirect: "follow",
-        method: 'POST',
-        // mode: 'no-cors',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'text/plain'
-        },
-        body: JSON.stringify({pCount: pCount, eCount: eCount, cCount: cCount, kCount: kCount,
-                                pEXE: pEXE, eEXE: eEXE, cEXE: cEXE, kEXE: kEXE})
-            // body: JSON.stringify({a: 1, b: 'Textual content'})
-    });
-    // const content = await rawResponse.json();
-
-    console.log("done");
-}
-
-var xValues = ["Patty", "Eleanor", "Celine", "Karina"];
-var yValues = [pCount, eCount, cCount, kCount];
-var barColors = ["#241528", "d134e9",'#3f1a44',"#4a6b8c"];
-
-const chart = new Chart("myChart", {
-  type: "bar",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    title: {
-      display: true,
-      text: "Swear Jar Totals"
-    },
-    scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero: true,
-                callback: function(value) {if (value % 1 === 0) {return value;}}
-            }
-        }]
-    }
-  }
-});
-
-function pAdd() {
-    pCount += 1;
-    pEXE += 1;
-    document.getElementById("pEXE").innerHTML = pEXE;
-    chart.data.datasets[0].data[0] += 1;
-    chart.update();
-}
-function pSub() {
-    pEXE -= 1;
-    document.getElementById("pEXE").innerHTML = pEXE;
-}
-
-</script>
-
+    <script src="js/scripts.js"></script>
 </body>
 </html>
 
