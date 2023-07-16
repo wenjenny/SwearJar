@@ -7,34 +7,40 @@ var eEXE = 0;
 var cEXE = 0;
 var kEXE = 0;
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbzCEdZV_pBxm3a0OG_Rx4jaVEZOuGMT2T3hHzM4AkRuwcvmrs1HF-_Ka8upFhiL511T/exec'
+var user = false;
+
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxg8N8_sDHq2thV5FEhM259wBwo-XVZPoNynh49zAe6G4T5InSyArakJWtZbOtjs7Jd/exec'
 
 async function getInfo() {
-    let response = await fetch(scriptURL, {method: 'GET'})
-    let responseText = await response.text()
+    var who = prompt("Who are you?");
+    let response = await fetch(scriptURL, {method: 'GET'});
+    let responseText = await response.text();
     
-   var lst = responseText.split(',')
-   pCount = parseInt(lst[0])
-   eCount = parseInt(lst[1])
-   cCount = parseInt(lst[2])
-   kCount = parseInt(lst[3])
-   pEXE = parseInt(lst[4])
-   eEXE = parseInt(lst[5])
-   cEXE = parseInt(lst[6])
-   kEXE = parseInt(lst[7])
-   document.getElementById('pCount').innerHTML=pCount
-   document.getElementById('pEXE').innerHTML=pEXE
-   document.getElementById('eCount').innerHTML=eCount
-   document.getElementById('eEXE').innerHTML=eEXE
-   document.getElementById('cCount').innerHTML=cCount
-   document.getElementById('cEXE').innerHTML=cEXE
-   document.getElementById('kCount').innerHTML=kCount
-   document.getElementById('kEXE').innerHTML=kEXE
+   var lst = responseText.split(',');
+   pCount = parseInt(lst[0]);
+   eCount = parseInt(lst[1]);
+   cCount = parseInt(lst[2]);
+   kCount = parseInt(lst[3]);
+   pEXE = parseInt(lst[4]);
+   eEXE = parseInt(lst[5]);
+   cEXE = parseInt(lst[6]);
+   kEXE = parseInt(lst[7]);
+   document.getElementById('pCount').innerHTML=pCount;
+   document.getElementById('pEXE').innerHTML=pEXE;
+   document.getElementById('eCount').innerHTML=eCount;
+   document.getElementById('eEXE').innerHTML=eEXE;
+   document.getElementById('cCount').innerHTML=cCount;
+   document.getElementById('cEXE').innerHTML=cEXE;
+   document.getElementById('kCount').innerHTML=kCount;
+   document.getElementById('kEXE').innerHTML=kEXE;
    chart.data.datasets[0].data[0] = pCount;
    chart.data.datasets[0].data[1] = eCount;
    chart.data.datasets[0].data[2] = cCount;
    chart.data.datasets[0].data[3] = kCount;
    chart.update();
+   pw = lst[8];
+   if (who == pw) { user = true; }
+   else { alert("You are a viewer.") }
 }
 
 window.onload = getInfo;
@@ -57,8 +63,7 @@ async function setInfo() {
 
 var xValues = ["Patty", "Eleanor", "Celine", "Karina"];
 var yValues = [pCount, eCount, cCount, kCount];
-// var barColors = ["#f1a6c6", "#307aab","#4b97e7","#4a6b8c"];
-var barColors = ["red", "pink","purple","blue"];
+var barColors = ["#D03A20", "#D44A7A","#9f37ff","#5CA4F8"];
 
 const chart = new Chart("myChart", {
   type: "bar",
@@ -87,58 +92,147 @@ const chart = new Chart("myChart", {
 });
 
 function pAdd() {
-    pCount += 1;
-    pEXE += 1;
-    document.getElementById("pCount").innerHTML = pCount;
-    document.getElementById("pEXE").innerHTML = pEXE;
-    chart.data.datasets[0].data[0] += 1;
-    chart.update();
-    setInfo()
+    if (user) {
+        pCount += 1;
+        pEXE += 1;
+        document.getElementById("pCount").innerHTML = pCount;
+        document.getElementById("pEXE").innerHTML = pEXE;
+        chart.data.datasets[0].data[0] += 1;
+        chart.update();
+        setInfo();
+    }
 }
 function pSub() {
-    pEXE -= 1;
-    document.getElementById("pEXE").innerHTML = pEXE;
-    setInfo()
+    if (user) {
+        pEXE -= 1;
+        document.getElementById("pEXE").innerHTML = pEXE;
+        setInfo();
+    }
 }
 function eAdd() {
-    eCount += 1;
-    eEXE += 1;
-    document.getElementById("eCount").innerHTML = eCount;
-    document.getElementById("eEXE").innerHTML = eEXE;
-    chart.data.datasets[0].data[1] += 1;
-    chart.update();
-    setInfo()
+    if (user) {
+        eCount += 1;
+        eEXE += 1;
+        document.getElementById("eCount").innerHTML = eCount;
+        document.getElementById("eEXE").innerHTML = eEXE;
+        chart.data.datasets[0].data[1] += 1;
+        chart.update();
+        setInfo();
+    }
 }
 function eSub() {
-    eEXE -= 1;
-    document.getElementById("eEXE").innerHTML = eEXE;
-    setInfo()
+    if (user) {
+        eEXE -= 1;
+        document.getElementById("eEXE").innerHTML = eEXE;
+        setInfo();
+    }
 }
 function cAdd() {
-    cCount += 1;
-    cEXE += 1;
-    document.getElementById("cCount").innerHTML = cCount;
-    document.getElementById("cEXE").innerHTML = cEXE;
-    chart.data.datasets[0].data[2] += 1;
-    chart.update();
-    setInfo()
+    if (user) {
+        cCount += 1;
+        cEXE += 1;
+        document.getElementById("cCount").innerHTML = cCount;
+        document.getElementById("cEXE").innerHTML = cEXE;
+        chart.data.datasets[0].data[2] += 1;
+        chart.update();
+        setInfo();
+    }
 }
 function cSub() {
-    cEXE -= 1;
-    document.getElementById("cEXE").innerHTML = cEXE;
-    setInfo()
+    if (user) {
+        cEXE -= 1;
+        document.getElementById("cEXE").innerHTML = cEXE;
+        setInfo();
+    }
 }
 function kAdd() {
-    kCount += 1;
-    kEXE += 1;
-    document.getElementById("kCount").innerHTML = kCount;
-    document.getElementById("kEXE").innerHTML = kEXE;
-    chart.data.datasets[0].data[3] += 1;
-    chart.update();
-    setInfo()
+    if (user) {
+        kCount += 1;
+        kEXE += 1;
+        document.getElementById("kCount").innerHTML = kCount;
+        document.getElementById("kEXE").innerHTML = kEXE;
+        chart.data.datasets[0].data[3] += 1;
+        chart.update();
+        setInfo();
+    }
 }
 function kSub() {
-    kEXE -= 1;
-    document.getElementById("kEXE").innerHTML = kEXE;
-    setInfo()
+    if (user) {
+        kEXE -= 1;
+        document.getElementById("kEXE").innerHTML = kEXE;
+        setInfo();
+    }
+}
+
+function pAddUndo() {
+    if (user) {
+        pCount -= 1;
+        pEXE -= 1;
+        document.getElementById("pCount").innerHTML = pCount;
+        document.getElementById("pEXE").innerHTML = pEXE;
+        chart.data.datasets[0].data[0] -= 1;
+        chart.update();
+        setInfo();
+    }
+}
+function pSubUndo() {
+    if (user) {
+        pEXE += 1;
+        document.getElementById("pEXE").innerHTML = pEXE;
+        setInfo();
+    }
+}
+function eAddUndo() {
+    if (user) {
+        eCount -= 1;
+        eEXE -= 1;
+        document.getElementById("eCount").innerHTML = eCount;
+        document.getElementById("eEXE").innerHTML = eEXE;
+        chart.data.datasets[0].data[1] -= 1;
+        chart.update();
+        setInfo();
+    }
+}
+function eSubUndo() {
+    if (user) {
+        eEXE += 1;
+        document.getElementById("eEXE").innerHTML = eEXE;
+        setInfo();
+    }
+}
+function cAddUndo() {
+    if (user) {
+        cCount -= 1;
+        cEXE -= 1;
+        document.getElementById("cCount").innerHTML =cCount;
+        document.getElementById("cEXE").innerHTML = cEXE;
+        chart.data.datasets[0].data[2] -= 1;
+        chart.update();
+        setInfo();
+    }
+}
+function cSubUndo() {
+    if (user) {
+        cEXE += 1;
+        document.getElementById("cEXE").innerHTML = cEXE;
+        setInfo();
+    }
+}
+function kAddUndo() {
+    if (user) {
+        kCount -= 1;
+        kEXE -= 1;
+        document.getElementById("kCount").innerHTML =kCount;
+        document.getElementById("kEXE").innerHTML = kEXE;
+        chart.data.datasets[0].data[3] -= 1;
+        chart.update();
+        setInfo();
+    }
+}
+function kSubUndo() {
+    if (user) {
+        kEXE += 1;
+        document.getElementById("kEXE").innerHTML = kEXE;
+        setInfo();
+    }
 }
